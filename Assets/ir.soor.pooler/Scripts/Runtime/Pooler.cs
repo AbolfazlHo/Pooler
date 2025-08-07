@@ -8,16 +8,42 @@ using Random = UnityEngine.Random;
 
 namespace Soor.Pooler
 {
+    /// <summary>
+    /// This class is responsible for managing an Object Pool.
+    /// </summary>
     [Serializable]
     public class Pooler
     {
         #region SERIALIZED_FIELD
 
+        /// <summary>
+        /// A name to identify this specific pool.
+        /// </summary>
         [SerializeField] private string _poolName;
+        
+        /// <summary>
+        /// The initial size of the pool.
+        /// </summary>
         [SerializeField] private int _poolDefaultCapacity = 10;
+        
+        /// <summary>
+        /// The maximum number of objects the pool can hold.
+        /// </summary>
         [SerializeField] private int _poolMaxCapacity = 1000;
+        
+        /// <summary>
+        /// A list of prefabs that will be pooled. The pool will instantiate from this list.
+        /// </summary>
         [SerializeField] private List<Poolable> _objectsToPool = new List<Poolable>();
+        
+        /// <summary>
+        /// Event invoked when the pool is generated.
+        /// </summary>
         [SerializeField] private UnityEvent _onGeneratObjectPoolEvent;
+        
+        /// <summary>
+        /// Event invoked when the pool is destroyed.
+        /// </summary>
         [SerializeField] private UnityEvent _onDestroyObjectPoolEvent;
 
         #endregion SERIALIZED_FIELD
@@ -25,8 +51,14 @@ namespace Soor.Pooler
 
         #region FIELDS
 
+        /// <summary>
+        /// The actual Object Pool instance.
+        /// </summary>
         private ObjectPool<Poolable> _objectPool = null;
-        private Poolable _newPoolable;
+        
+        /// <summary>
+        /// A list to keep track of all objects ever created by the pool.
+        /// </summary>
         private List<Poolable> _allPoolables = new List<Poolable>();
 
         #endregion FIELDS
@@ -34,7 +66,14 @@ namespace Soor.Pooler
         
         #region PROPERTIES
 
+        /// <summary>
+        /// Read-only property to access the pool's name.
+        /// </summary>
         public string PoolName => _poolName;
+        
+        /// <summary>
+        /// Read-only property to access the ObjectPool itself.
+        /// </summary>
         public ObjectPool<Poolable> ObjectPool => _objectPool;
 
         #endregion PROPERTIES
@@ -42,6 +81,13 @@ namespace Soor.Pooler
 
         #region PUBLIC_METHODS
 
+        /// <summary>
+        /// A constructor to create a new Pooler instance from code.
+        /// </summary>
+        /// <param name="poolNamem">The name of the pool.</param>
+        /// <param name="objectsToPool">The list of objects that supposed to be pooled.</param>
+        /// <param name="poolDefaultCapacity">The default capacity of the pool.</param>
+        /// <param name="poolMaxCapacity">The max count of objects within the pool.</param>
         public Pooler(string poolNamem,List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000)
         {
             _poolName = poolNamem;
@@ -50,6 +96,14 @@ namespace Soor.Pooler
             _poolMaxCapacity = poolMaxCapacity;
         }
 
+        /// <summary>
+        /// Generates ObjectPool.
+        /// Create a new ObjectPool, defining the four core callbacks:
+        /// 1. CreatePoolable: The function called to create a new object.
+        /// 2. OnGetPoolable: The function called when an object is retrieved from the pool.
+        /// 3. OnReleasePoolable: The function called when an object is returned to the pool.
+        /// 4. OnDestroyPoolable: The function called when an object is permanently destroyed from the pool.
+        /// </summary>
         public void GenerateObjectPool()
         {
             _objectPool = new ObjectPool<Poolable>
@@ -61,6 +115,9 @@ namespace Soor.Pooler
             OnGenerateObjectPool();
         }
 
+        /// <summary>
+        /// Completely destroys and cleans the ObjectPool.
+        /// </summary>
         public void DestroyObjectPool()
         {
             if (_objectPool == null) return;
@@ -86,6 +143,11 @@ namespace Soor.Pooler
 
         #region PRIVATE_METHODS
 
+        /// <summary>
+        /// Creates (instantiates) a new Poolable.
+        /// </summary>
+        /// <returns>The instantiated Poolable object.</returns>
+        /// <exception cref="Exception">If there is no Poolable prefab to create.</exception>
         private Poolable CreatePoolable()
         {
             if (_objectsToPool.Count == 0)
@@ -117,26 +179,44 @@ namespace Soor.Pooler
             return createdPoolable;
         }
 
+        /// <summary>
+        /// Invokes the custom event for pool generation.
+        /// </summary>
         private void OnGenerateObjectPool()
         {
             _onGeneratObjectPoolEvent?.Invoke();
         }
 
+        /// <summary>
+        /// Invokes the custom event for pool destruction.
+        /// </summary>
         private void OnDestroyObjectPool()
         {
             _onDestroyObjectPoolEvent?.Invoke();
         }
 
+        /// <summary>
+        /// Method called by the ObjectPool when an object is retrieved.
+        /// </summary>
+        /// <param name="poolable">The taken Poolable from the pool.</param>
         private void OnGetPoolable(Poolable poolable)
         {
             poolable.OnGet();
         }
 
+        /// <summary>
+        /// Method called by the ObjectPool when an object is returned.
+        /// </summary>
+        /// <param name="poolable">The given poolable to the pool.</param>
         private void OnReleasePoolable(Poolable poolable)
         {
             poolable.OnRelease();
         }
 
+        /// <summary>
+        /// Method called by the ObjectPool when an object is destroyed.
+        /// </summary>
+        /// <param name="poolable">The Poolable object will be destroyed.</param>
         private void OnDestroyPoolable(Poolable poolable)
         {
         }
