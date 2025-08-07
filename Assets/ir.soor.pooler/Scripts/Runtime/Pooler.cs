@@ -11,6 +11,8 @@ namespace Soor.Pooler
     [Serializable]
     public class Pooler
     {
+        #region SERIALIZED_FIELD
+
         [SerializeField] private string _poolName;
         [SerializeField] private int _poolDefaultCapacity = 10;
         [SerializeField] private int _poolMaxCapacity = 1000;
@@ -18,12 +20,27 @@ namespace Soor.Pooler
         [SerializeField] private UnityEvent _onGeneratObjectPoolEvent;
         [SerializeField] private UnityEvent _onDestroyObjectPoolEvent;
 
+        #endregion SERIALIZED_FIELD
+
+
+        #region FIELDS
+
         private ObjectPool<Poolable> _objectPool = null;
         private Poolable _newPoolable;
         private List<Poolable> _allPoolables = new List<Poolable>();
 
+        #endregion FIELDS
+
+        
+        #region PROPERTIES
+
         public string PoolName => _poolName;
         public ObjectPool<Poolable> ObjectPool => _objectPool;
+
+        #endregion PROPERTIES
+
+
+        #region PUBLIC_METHODS
 
         public Pooler(string poolNamem,List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000)
         {
@@ -63,6 +80,11 @@ namespace Soor.Pooler
         
             OnDestroyObjectPool();
         }
+        
+        #endregion PUBLIC_METHODS
+
+
+        #region PRIVATE_METHODS
 
         private Poolable CreatePoolable()
         {
@@ -118,5 +140,7 @@ namespace Soor.Pooler
         private void OnDestroyPoolable(Poolable poolable)
         {
         }
+        
+        #endregion PRIVATE_METHODS
     }
 }
