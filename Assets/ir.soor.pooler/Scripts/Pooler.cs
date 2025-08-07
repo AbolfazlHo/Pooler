@@ -12,27 +12,14 @@ public class Pooler
     [SerializeField] private string _poolName;
     [SerializeField] private int _poolDefaultCapacity = 10;
     [SerializeField] private int _poolMaxCapacity = 1000;
-
     [SerializeField] private List<Poolable> _objectsToPool = new List<Poolable>();
     [SerializeField] private UnityEvent _onPoolGeneratedEvent;
 
     private ObjectPool<Poolable> _objectPool = null;
     private Poolable _newPoolable;
 
-
     public string PoolName => _poolName;
-
     public ObjectPool<Poolable> ObjectPool => _objectPool;
-
-//    public static Pooler Instance
-//    {
-//        get
-//        {
-//            if (Instance != null) return Instance;
-//            else return new Pooler();
-//        }
-//    }
-
 
     public Pooler(string poolNamem,List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000)
     {
@@ -45,8 +32,11 @@ public class Pooler
 
     public void GenerateObjectPool()
     {
-        _objectPool = new ObjectPool<Poolable>(CreatePoolable, OnGetPoolable, OnReleasePoolable, OnDestroyPoolable,
-            true, _poolDefaultCapacity, _poolMaxCapacity);
+        _objectPool = new ObjectPool<Poolable>
+        (
+            CreatePoolable, OnGetPoolable, OnReleasePoolable, OnDestroyPoolable,
+            true, _poolDefaultCapacity, _poolMaxCapacity
+        );
 
         OnPoolGenerated();
     }
