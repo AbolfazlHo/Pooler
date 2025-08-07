@@ -39,16 +39,25 @@ public class Poolable : MonoBehaviour
 
     public void OnCreate()
     {
+        Debug.Log("OnCreate    ---------    OnCreate      --------    OnCreate     --------     OnCreate");
+        
         onCreateEvent?.Invoke();
     }
 
     public void OnGet()
     {
+        _isReleased = false;
+        
+        Debug.Log("OnGet      --------    OnGet      --------    OnGet     --------   OnGet");
+        
         onGetEvent?.Invoke();
     }
 
     public void OnRelease()
     {
+        _isReleased = true;
+        Debug.Log("OnRelease       ---------      OnRelease       ----------     OnRelease     ---------      OnRelease");
+        
         onReleaseEvent?.Invoke();
     }
 }

@@ -21,12 +21,12 @@ public class PoolsManager : MonoBehaviour
 
     public void GenerateObjectPool(Pooler pooler)
     {
-        pooler.GenerateObjectPool();
+        if (pooler.ObjectPool == null) pooler.GenerateObjectPool();
     }
 
     public void GenerateObjectPool(string name)
     {
-        var intendedPooler = _allPoolers.FirstOrDefault(p => p.PoolName == name);
+        var intendedPooler = GetPooler(name);
         
         if (intendedPooler == null)
         {
@@ -35,6 +35,12 @@ public class PoolsManager : MonoBehaviour
         }
 
         GenerateObjectPool(intendedPooler);
+    }
+
+    public Pooler GetPooler(string poolerName)
+    {
+        var intendedPooler = _allPoolers.FirstOrDefault(p => p.PoolName == poolerName);
+        return intendedPooler;
     }
     
     

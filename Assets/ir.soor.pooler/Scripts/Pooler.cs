@@ -32,6 +32,8 @@ public class Pooler
 
     public void GenerateObjectPool()
     {
+        Debug.Log("GenerateObjectPool     -------------------      GenerateObjectPool");
+        
         _objectPool = new ObjectPool<Poolable>
         (
             CreatePoolable, OnGetPoolable, OnReleasePoolable, OnDestroyPoolable,
