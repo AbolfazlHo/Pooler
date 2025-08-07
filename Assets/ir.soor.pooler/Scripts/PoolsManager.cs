@@ -15,6 +15,12 @@ public class PoolsManager : MonoBehaviour
 
     public void AddPooler(string poolName, List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapecity = 1000, bool generatePoolImmediately = true)
     {
+        if (_allPoolers.Any(p => p.PoolName == poolName))
+        {
+            Debug.LogError($"A Pooler with the name {poolName} already exists.");
+            throw new Exception("Already exists.");
+        }
+        
         _allPoolers.Add(new Pooler(poolName, objectsToPool, poolDefaultCapacity, poolMaxCapecity));
         if (generatePoolImmediately) GenerateObjectPool(_allPoolers[^1]);
     }
@@ -28,11 +34,11 @@ public class PoolsManager : MonoBehaviour
     {
         var intendedPooler = GetPooler(name);
         
-        if (intendedPooler == null)
-        {
-            Debug.LogError("There isn't a pool with the intended name.");
-            throw new Exception("A pool with the intended name not found");
-        }
+//        if (intendedPooler == null)
+//        {
+//            Debug.LogError("There isn't a pool with the intended name.");
+//            throw new Exception("A pool with the intended name not found");
+//        }
 
         GenerateObjectPool(intendedPooler);
     }
@@ -40,11 +46,27 @@ public class PoolsManager : MonoBehaviour
     public Pooler GetPooler(string poolerName)
     {
         var intendedPooler = _allPoolers.FirstOrDefault(p => p.PoolName == poolerName);
-        return intendedPooler;
+
+        if (intendedPooler != null) return intendedPooler;
+        
+        Debug.LogError("There isn't a pool with the intended name.");
+        throw new Exception("Not found");
+
     }
-    
-    
-    
+
+    public void DestroyObjectPool(string name)
+    {
+        var intendedPooler = GetPooler(name);
+        
+//        intendedPooler.DestroyObjectPool();
+
+        DestroyObjectPool(intendedPooler);
+    }
+
+    public void DestroyObjectPool(Pooler pooler)
+    {
+        pooler.DestroyObjectPool();
+    }
     
     
     // DestroyObjectPool

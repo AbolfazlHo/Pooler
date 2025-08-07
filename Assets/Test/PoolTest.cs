@@ -70,6 +70,10 @@ public class PoolTest : MonoBehaviour
     private void DestroyObjectPool()
     {
         Debug.Log("private void DestroyObjectPool()");
-        _pooler?.DestroyObjectPool();
+//        _pooler?.DestroyObjectPool();
+
+        if (_pooler == null) return;
+        
+        _poolsManager.DestroyObjectPool(_pooler);
     }
 }
