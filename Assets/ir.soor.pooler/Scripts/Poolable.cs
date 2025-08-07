@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,20 +23,35 @@ public class Poolable : MonoBehaviour
 //        set => _isReleased = value;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     private void OnEnable()
     {
-        throw new NotImplementedException();
+        onEnableEvent?.Invoke();
+    }
+
+    private void OnDisable()
+    {
+        onDisableEvent?.Invoke();
+    }
+
+    private void OnDestroy()
+    {
+        onDestroyEvent?.Invoke();
+    }
+
+    public void OnCreate()
+    {
+        onCreateEvent?.Invoke();
+    }
+
+    public void OnGet()
+    {
+        onGetEvent?.Invoke();
+    }
+
+    public void OnRelease()
+    {
+        onReleaseEvent?.Invoke();
     }
 }
