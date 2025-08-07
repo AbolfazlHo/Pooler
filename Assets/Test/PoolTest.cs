@@ -5,25 +5,11 @@ public class PoolTest : MonoBehaviour
 {
 
     [SerializeField] private PoolsManager _poolsManager;
-
+    [SerializeField] private List<Poolable> _secondPoolables;
 
     private Pooler _pooler = null;
-
     private List<Poolable> _poolables = new List<Poolable>();
     
-    
-    public void PoolabelEnabled()
-    {
-        Debug.Log("PoolabelEnabled");
-    }
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -44,36 +30,41 @@ public class PoolTest : MonoBehaviour
         {
             DestroyObjectPool();
         }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            CreateNewPool();
+        }
     }
 
     private void GetAPoolable()
     {
         if (_pooler == null)
         {
-            _pooler = _poolsManager.GetPooler("my-pool");
+//            _pooler = _poolsManager.GetPooler("my-pool");
+            _pooler = _poolsManager.GetPooler("second-pool");
             _poolsManager.GenerateObjectPool(_pooler);
         }
         
         var p = _pooler.ObjectPool.Get();
-//        _poolables.Add(_pooler.ObjectPool.Get());
         _poolables.Add(p);
     }
 
     private void ReleasePoolable(Poolable poolable)
     {
-        if (_pooler == null) return;
-        
-        _pooler.ObjectPool.Release(poolable);
-        
+        _pooler?.ObjectPool.Release(poolable);
     }
 
     private void DestroyObjectPool()
     {
         Debug.Log("private void DestroyObjectPool()");
-//        _pooler?.DestroyObjectPool();
-
         if (_pooler == null) return;
-        
         _poolsManager.DestroyObjectPool(_pooler);
+        _pooler = null;
+    }
+
+    private void CreateNewPool()
+    {
+        _poolsManager.AddPooler("second-pool", _secondPoolables, 10, 20, true);
     }
 }

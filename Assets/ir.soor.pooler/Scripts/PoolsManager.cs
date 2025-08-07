@@ -33,33 +33,20 @@ public class PoolsManager : MonoBehaviour
     public void GenerateObjectPool(string name)
     {
         var intendedPooler = GetPooler(name);
-        
-//        if (intendedPooler == null)
-//        {
-//            Debug.LogError("There isn't a pool with the intended name.");
-//            throw new Exception("A pool with the intended name not found");
-//        }
-
         GenerateObjectPool(intendedPooler);
     }
 
     public Pooler GetPooler(string poolerName)
     {
         var intendedPooler = _allPoolers.FirstOrDefault(p => p.PoolName == poolerName);
-
         if (intendedPooler != null) return intendedPooler;
-        
         Debug.LogError("There isn't a pool with the intended name.");
         throw new Exception("Not found");
-
     }
 
     public void DestroyObjectPool(string name)
     {
         var intendedPooler = GetPooler(name);
-        
-//        intendedPooler.DestroyObjectPool();
-
         DestroyObjectPool(intendedPooler);
     }
 
@@ -67,8 +54,4 @@ public class PoolsManager : MonoBehaviour
     {
         pooler.DestroyObjectPool();
     }
-    
-    
-    // DestroyObjectPool
-    
 }

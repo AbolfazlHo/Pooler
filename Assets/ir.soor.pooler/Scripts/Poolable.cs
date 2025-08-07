@@ -30,6 +30,7 @@ public class Poolable : MonoBehaviour
 
     private void OnDestroy()
     {
+        Debug.Log("private void OnDestroy()      -------      private void OnDestroy()");
         onDestroyEvent?.Invoke();
     }
 

@@ -18,11 +18,10 @@ public class Pooler
 
     private ObjectPool<Poolable> _objectPool = null;
     private Poolable _newPoolable;
+    private List<Poolable> _allPoolables = new List<Poolable>();
 
     public string PoolName => _poolName;
     public ObjectPool<Poolable> ObjectPool => _objectPool;
-
-    private List<Poolable> _allPoolables = new List<Poolable>();
 
     public Pooler(string poolNamem,List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000)
     {
@@ -31,7 +30,6 @@ public class Pooler
         _poolDefaultCapacity = poolDefaultCapacity;
         _poolMaxCapacity = poolMaxCapacity;
     }
-
 
     public void GenerateObjectPool()
     {
@@ -52,7 +50,12 @@ public class Pooler
         _objectPool.Dispose();
         _objectPool = null;
         
-        _allPoolables.ForEach( p => Object.Destroy(p.gameObject));
+        _allPoolables.ForEach(p =>
+            {
+                if (p.gameObject != null) Object.Destroy(p.gameObject);
+            })
+        ;
+        
         _allPoolables.Clear();
         _allPoolables = new List<Poolable>();
         
@@ -80,13 +83,13 @@ public class Pooler
         }
 
         createdPoolable.OnCreate();
+        
         if (_allPoolables == null)
         {
             _allPoolables = new List<Poolable>();
         }
         
         _allPoolables.Add(createdPoolable);
-        
         return createdPoolable;
     }
 
@@ -112,6 +115,5 @@ public class Pooler
 
     private void OnDestroyPoolable(Poolable poolable)
     {
-        _allPoolables.Remove(poolable);
     }
 }
