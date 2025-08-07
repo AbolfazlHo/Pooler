@@ -1,0 +1,21 @@
+{
+  "name": "ir.soor.pooler",
+  "displayName": "Soor Pooler",
+  "version": "0.0.1",
+  "unity": "6000.0",
+  "description": "A package to pool everything.",
+  "keywords": [
+    "Pool",
+    "ObjectPool",
+    "Pooler",
+    "poolable"
+  ],
+  "dependencies": {},
+  "samples": [{}],
+  "relatedPackages": {},
+  "upmCi": {},
+  "repository": {
+    "url": "https://github.com/AbolfazlHo/Pooler.git",
+    "type": "github"
+  }
+}
