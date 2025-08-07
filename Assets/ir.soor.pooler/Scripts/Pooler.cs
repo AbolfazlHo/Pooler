@@ -48,26 +48,13 @@ public class Pooler
     {
         if (_objectPool == null) return;
 
-        
-        
-//        while (_objectPool.)
-//        {
-//            
-//        }
-//        
-//        Object.Destroy(_objectPool.Get());
-        
         _objectPool.Clear();
         _objectPool.Dispose();
         _objectPool = null;
         
-        
-        
-//        _allPoolables.ForEach(Object.Destroy);
         _allPoolables.ForEach( p => Object.Destroy(p.gameObject));
         _allPoolables.Clear();
         _allPoolables = new List<Poolable>();
-        
         
         OnDestroyObjectPool();
     }
@@ -125,7 +112,6 @@ public class Pooler
 
     private void OnDestroyPoolable(Poolable poolable)
     {
-        //
         _allPoolables.Remove(poolable);
     }
 }
