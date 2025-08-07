@@ -39,6 +39,11 @@ public class PoolTest : MonoBehaviour
                 _poolables.Remove(_poolables[^1]);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            DestroyObjectPool();
+        }
     }
 
     private void GetAPoolable()
@@ -60,5 +65,11 @@ public class PoolTest : MonoBehaviour
         
         _pooler.ObjectPool.Release(poolable);
         
+    }
+
+    private void DestroyObjectPool()
+    {
+        Debug.Log("private void DestroyObjectPool()");
+        _pooler?.DestroyObjectPool();
     }
 }

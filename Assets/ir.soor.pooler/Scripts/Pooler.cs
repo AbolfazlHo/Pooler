@@ -13,13 +13,16 @@ public class Pooler
     [SerializeField] private int _poolDefaultCapacity = 10;
     [SerializeField] private int _poolMaxCapacity = 1000;
     [SerializeField] private List<Poolable> _objectsToPool = new List<Poolable>();
-    [SerializeField] private UnityEvent _onPoolGeneratedEvent;
+    [SerializeField] private UnityEvent _onGeneratObjectPoolEvent;
+    [SerializeField] private UnityEvent _onDestroyObjectPoolEvent;
 
     private ObjectPool<Poolable> _objectPool = null;
     private Poolable _newPoolable;
 
     public string PoolName => _poolName;
     public ObjectPool<Poolable> ObjectPool => _objectPool;
+
+    private List<Poolable> _allPoolables = new List<Poolable>();
 
     public Pooler(string poolNamem,List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000)
     {
@@ -32,15 +35,41 @@ public class Pooler
 
     public void GenerateObjectPool()
     {
-        Debug.Log("GenerateObjectPool     -------------------      GenerateObjectPool");
-        
         _objectPool = new ObjectPool<Poolable>
         (
             CreatePoolable, OnGetPoolable, OnReleasePoolable, OnDestroyPoolable,
             true, _poolDefaultCapacity, _poolMaxCapacity
         );
 
-        OnPoolGenerated();
+        OnGenerateObjectPool();
+    }
+
+    public void DestroyObjectPool()
+    {
+        if (_objectPool == null) return;
+
+        
+        
+//        while (_objectPool.)
+//        {
+//            
+//        }
+//        
+//        Object.Destroy(_objectPool.Get());
+        
+        _objectPool.Clear();
+        _objectPool.Dispose();
+        _objectPool = null;
+        
+        
+        
+//        _allPoolables.ForEach(Object.Destroy);
+        _allPoolables.ForEach( p => Object.Destroy(p.gameObject));
+        _allPoolables.Clear();
+        _allPoolables = new List<Poolable>();
+        
+        
+        OnDestroyObjectPool();
     }
 
     private Poolable CreatePoolable()
@@ -64,12 +93,24 @@ public class Pooler
         }
 
         createdPoolable.OnCreate();
+        if (_allPoolables == null)
+        {
+            _allPoolables = new List<Poolable>();
+        }
+        
+        _allPoolables.Add(createdPoolable);
+        
         return createdPoolable;
     }
 
-    public void OnPoolGenerated()
+    private void OnGenerateObjectPool()
     {
-        _onPoolGeneratedEvent?.Invoke();
+        _onGeneratObjectPoolEvent?.Invoke();
+    }
+
+    private void OnDestroyObjectPool()
+    {
+        _onDestroyObjectPoolEvent?.Invoke();
     }
 
     private void OnGetPoolable(Poolable poolable)
@@ -85,5 +126,6 @@ public class Pooler
     private void OnDestroyPoolable(Poolable poolable)
     {
         //
+        _allPoolables.Remove(poolable);
     }
 }
