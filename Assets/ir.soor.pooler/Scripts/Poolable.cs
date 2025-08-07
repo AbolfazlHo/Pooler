@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class Poolable : MonoBehaviour
 {
-
     #region EVENTS
 
     public UnityEvent onCreateEvent; 
@@ -22,8 +21,6 @@ public class Poolable : MonoBehaviour
         get => _isReleased;
 //        set => _isReleased = value;
     }
-
-    
 
     private void OnEnable()
     {

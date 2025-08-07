@@ -11,39 +11,42 @@ public class Pooler
 {
     [SerializeField] private string _poolName;
     [SerializeField] private int _poolDefaultCapacity = 10;
-    [SerializeField] private int _poolMaxCapacity = 100;
+    [SerializeField] private int _poolMaxCapacity = 1000;
 
     [SerializeField] private List<Poolable> _objectsToPool = new List<Poolable>();
+    [SerializeField] private UnityEvent _onPoolGeneratedEvent;
 
-    private ObjectPool<Poolable> _objectPool;
-
+    private ObjectPool<Poolable> _objectPool = null;
     private Poolable _newPoolable;
 
-    #region EVENTS
 
-    // ?????
-//    [SerializeField] private UnityEvent _onNewPoolableCreated;
-    [SerializeField] private UnityEvent _onPoolGeneratedEvent;
-    
+    public string PoolName => _poolName;
 
-    #endregion EVENTS
-    
-    public static Pooler Instance
+    public ObjectPool<Poolable> ObjectPool => _objectPool;
+
+//    public static Pooler Instance
+//    {
+//        get
+//        {
+//            if (Instance != null) return Instance;
+//            else return new Pooler();
+//        }
+//    }
+
+
+    public Pooler(string poolNamem,List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000)
     {
-        get
-        {
-            if (Instance != null) return Instance;
-            else return new Pooler();
-        }
+        _poolName = poolNamem;
+        _objectsToPool = objectsToPool;
+        _poolDefaultCapacity = poolDefaultCapacity;
+        _poolMaxCapacity = poolMaxCapacity;
     }
+
 
     public void GenerateObjectPool()
     {
         _objectPool = new ObjectPool<Poolable>(CreatePoolable, OnGetPoolable, OnReleasePoolable, OnDestroyPoolable,
             true, _poolDefaultCapacity, _poolMaxCapacity);
-
-
-
 
         OnPoolGenerated();
     }
@@ -68,17 +71,9 @@ public class Pooler
             createdPoolable = Object.Instantiate(_objectsToPool[randomIndex]);
         }
 
-//        createdPoolable.onCreateEvent.AddListener(OnNewPoolableCreated);
         createdPoolable.OnCreate();
-//        OnNewPoolableCreated();
         return createdPoolable;
     }
-
-//    public void OnNewPoolableCreated()
-//    {
-//        _onNewPoolableCreated?.Invoke();
-//    }
-
 
     public void OnPoolGenerated()
     {
@@ -99,6 +94,4 @@ public class Pooler
     {
         //
     }
-    
-    
 }
