@@ -69,13 +69,13 @@ The package consists of three main scripts:
 
 To get an object from the pool:
 
-```C#
+```csharp
 Pooler myPooler = poolsManager.GetPooler("YourPoolName");
 Poolable pooledObject = myPooler.ObjectPool.Get();
 ```
 
 To return an object to the pool:
 
-```C#
+```csharp
 myPooler.ObjectPool.Release(pooledObject);
 ```
