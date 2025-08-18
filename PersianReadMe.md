@@ -42,24 +42,24 @@ Pooler یک پکیج یونیتی است که برای ساده‌سازی و ب
 
 ### نصب
 
-1- Unity Package Manager را باز کنید.
+۱- Unity Package Manager را باز کنید.
 
-2- روی دکمه `+` در بالا سمت چپ کلیک کنید.
+۲- روی دکمه `+` در بالا سمت چپ کلیک کنید.
 
-3- "Add package from git URL..." را انتخاب کنید.
+۳- "Add package from git URL..." را انتخاب کنید.
 
-4- آدرس زیر را وارد کنید:
+۴- آدرس زیر را وارد کنید:
 
  ```
  https://github.com/AbolfazlHo/Pooler.git?path=Assets/ir.soor.pooler.
 ```
 
-5- روی `Add` کلیک کنید.
+۵- روی `Add` کلیک کنید.
 
 
 ### استفاده
 
-#### 1- ساخت یک  Poolable Prefab:
+#### ۱- ساخت یک  Poolable Prefab:
 
 * یک `GameObject` که می‌خواهید `pool` کنید، ایجاد کنید.
 
@@ -70,7 +70,7 @@ Pooler یک پکیج یونیتی است که برای ساده‌سازی و ب
 * از این `GameObject` یک `Prefab` بسازید.
 
 
-####2- تنظیم PoolsManager:
+####۲- تنظیم PoolsManager:
 
 * در صحنه خود یک `GameObject` خالی جدید ایجاد کنید.
 
@@ -84,13 +84,13 @@ Pooler یک پکیج یونیتی است که برای ساده‌سازی و ب
 
 * ظرفیت پیش‌فرض `Pool` و حداکثر ظرفیت `Pool` را در صورت نیاز تنظیم کنید.
 
-#### 3-  ایجاد Pool:
+#### ۳-  ایجاد Pool:
 
 اگر می‌خواهید `pool` هنگام شروع صحنه آماده باشد، تیک گزینه `Generate All Pools on Awake` را در `Inspector` مربوط به `PoolsManager` بزنید.
 
 همچنین، می‌توانید با فراخوانی `PoolsManager.GenerateObjectPool("YourPoolName")` از یک اسکریپت دیگر، آن را به صورت دستی ایجاد کنید.
 
-#### 4- استفاده از Pool:
+#### ۴- استفاده از Pool:
 
 برای دریافت یک شیء از `pool`:
 

@@ -1,5 +1,7 @@
 # Pooler
 
+[Read in Persian/پارسی](./PersianReadMe.md)
+
 Pooler is a Unity package designed to simplify and streamline object pooling in your projects. It provides a robust and reusable way to manage pooled objects, offering a clean API and customizable lifecycle events. This can lead to significant performance improvements by reducing the overhead of instantiating and destroying GameObjects.
 
 ##Core Components
@@ -43,7 +45,7 @@ The package consists of three main scripts:
 
     * Set up any necessary UnityEvents in the Inspector (e.g., set onGetEvent to activate a particle effect).
 
-    * Drag the GameObject into your project hierarchy to create a prefab.
+    * Drag the GameObject into your project tab to create a prefab.
 
 2. Set up the PoolsManager:
 
