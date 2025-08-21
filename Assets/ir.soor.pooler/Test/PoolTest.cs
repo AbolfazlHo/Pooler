@@ -36,6 +36,12 @@ public class PoolTest : MonoBehaviour
         {
             CreateNewPool();
         }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            _pooler = _poolsManager.GetPooler("second-pool");
+            _pooler.AddObjectToObjectsToPoolList(_secondPoolables[0]);
+        }
     }
 
     private void GetAPoolable()

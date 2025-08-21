@@ -76,6 +76,12 @@ namespace Soor.Pooler
         /// </summary>
         public ObjectPool<Poolable> ObjectPool => _objectPool;
 
+
+        
+        
+        
+        public List<Poolable> ObjectsToPool => _objectsToPool;
+
         #endregion PROPERTIES
 
 
@@ -131,6 +137,26 @@ namespace Soor.Pooler
             _allPoolables = new List<Poolable>();
         
             OnDestroyObjectPool();
+        }
+
+
+
+
+        public void AddObjectToObjectsToPoolList(Poolable poolable)
+        {
+            if (_objectPool != null)
+            {
+
+                Debug.LogWarning
+                (@"
+If you add a `Poolable` after the pool is generated it's possible the poolable never appears in scene.
+Why this may happen?
+If some poolables been instantiated and released, it is possible the program use them for future `Get`s and the pool never been forced to instantiate a new poolable.
+So the intended poolable has no chance to randomly been chosen and be instantiate."
+                );
+            }
+            
+            _objectsToPool.Add(poolable);
         }
         
         #endregion PUBLIC_METHODS
