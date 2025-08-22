@@ -81,3 +81,10 @@ To return an object to the pool:
 ```csharp
 myPooler.ObjectPool.Release(pooledObject);
 ```
+To add a new poolable prefab to a pool that is already generated:
+
+```csharp
+myPooler.AddPoolablePrefab(newPoolablePrefab);
+```
+
+

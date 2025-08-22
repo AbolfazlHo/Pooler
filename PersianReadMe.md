@@ -94,14 +94,19 @@ Pooler یک پکیج یونیتی است که برای ساده‌سازی و ب
 
 برای دریافت یک شیء از `pool`:
 
-```C#
+```csharp
 Pooler myPooler = poolsManager.GetPooler("YourPoolName");
 Poolable pooledObject = myPooler.ObjectPool.Get();
 ```
 برای بازگرداندن یک شیء به `pool`:
 
-```c#
+```csharp
 myPooler.ObjectPool.Release(pooledObject);
 ```
 
+برای افزودن یک poolable prefab جدید به یک `Pooler` که پیش‌تر ایجاد شده است:
+
+```csharp
+myPooler.AddPoolablePrefab(newPoolablePrefab);
+```
     
