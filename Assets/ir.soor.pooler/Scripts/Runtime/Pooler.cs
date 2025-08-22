@@ -20,27 +20,27 @@ namespace Soor.Pooler
         /// A name to identify this specific pool.
         /// </summary>
         [SerializeField] private string _poolName;
-        
+
         /// <summary>
         /// The initial size of the pool.
         /// </summary>
         [SerializeField] private int _poolDefaultCapacity = 10;
-        
+
         /// <summary>
         /// The maximum number of objects the pool can hold.
         /// </summary>
         [SerializeField] private int _poolMaxCapacity = 1000;
-        
+
         /// <summary>
         /// List of prefabs used as source for pooled instances.
         /// </summary>
         [SerializeField] private List<Poolable> _objectsToPool = new List<Poolable>();
-        
+
         /// <summary>
         /// Invoked after the object pool is created.
         /// </summary>
-        [SerializeField] private UnityEvent _onGeneratObjectPoolEvent;
-        
+        [SerializeField] private UnityEvent _onGenerateObjectPoolEvent;
+
         /// <summary>
         /// Invoked after the object pool is destroyed and cleaned up.
         /// </summary>
@@ -55,7 +55,7 @@ namespace Soor.Pooler
         /// The actual Object Pool instance.
         /// </summary>
         private ObjectPool<Poolable> _objectPool = null;
-        
+
         /// <summary>
         /// A list to keep track of all objects ever created by the pool.
         /// </summary>
@@ -63,23 +63,22 @@ namespace Soor.Pooler
 
         #endregion FIELDS
 
-        
+
         #region PROPERTIES
 
         /// <summary>
         /// Read-only property to access the pool's name.
         /// </summary>
         public string PoolName => _poolName;
-        
+
         /// <summary>
         /// Read-only property to access the ObjectPool itself.
         /// </summary>
         public ObjectPool<Poolable> ObjectPool => _objectPool;
 
-
-        
-        
-        
+        /// <summary>
+        /// Gets a read-only list of the prefabs used as source for pooled instances.
+        /// </summary>
         public List<Poolable> ObjectsToPool => _objectsToPool;
 
         #endregion PROPERTIES
@@ -94,7 +93,8 @@ namespace Soor.Pooler
         /// <param name="objectsToPool">List of Poolable prefabs used for instantiation.</param>
         /// <param name="poolDefaultCapacity">Initial number of objects the pool can hold.</param>
         /// <param name="poolMaxCapacity">Maximum number of objects the pool can manage.</param>
-        public Pooler(string poolName,List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000)
+        public Pooler(string poolName, List<Poolable> objectsToPool, int poolDefaultCapacity = 10,
+            int poolMaxCapacity = 1000)
         {
             _poolName = poolName;
             _objectsToPool = objectsToPool;
@@ -126,39 +126,35 @@ namespace Soor.Pooler
             _objectPool.Clear();
             _objectPool.Dispose();
             _objectPool = null;
-        
+
             _allPoolables.ForEach(p =>
                 {
                     if (p.gameObject != null) Object.Destroy(p.gameObject);
                 })
                 ;
-        
+
             _allPoolables.Clear();
             _allPoolables = new List<Poolable>();
-        
+
             OnDestroyObjectPool();
         }
 
-
-
-
-        public void AddObjectToObjectsToPoolList(Poolable poolable)
+        /// <summary>
+        /// Adds a new Poolable prefab to the list of source objects for the pool.
+        /// A warning is logged if the pool has already been generated.
+        /// </summary>
+        /// <param name="poolable">The Poolable prefab to add.</param>
+        public void AddPoolablePrefab(Poolable poolable)
         {
-            if (_objectPool != null)
+            if (_objectPool != null && _allPoolables.Count > 0)
             {
-
-                Debug.LogWarning
-                (@"
-If you add a `Poolable` after the pool is generated it's possible the poolable never appears in scene.
-Why this may happen?
-If some poolables been instantiated and released, it is possible the program use them for future `Get`s and the pool never been forced to instantiate a new poolable.
-So the intended poolable has no chance to randomly been chosen and be instantiate."
-                );
+                Debug.LogWarning(
+                    "Adding a prefab after the pool has been generated may prevent it from being instantiated. Existing pooled objects will be used first, so the new prefab may not be chosen until the pool needs to create new instances.");
             }
-            
+
             _objectsToPool.Add(poolable);
         }
-        
+
         #endregion PUBLIC_METHODS
 
 
@@ -179,24 +175,15 @@ So the intended poolable has no chance to randomly been chosen and be instantiat
             }
 
             Poolable createdPoolable;
-
-            if (_objectsToPool.Count == 1)
-            {
-                createdPoolable = Object.Instantiate(_objectsToPool[0]);
-            }
-            else
-            {
-                var randomIndex = Random.Range(0, _objectsToPool.Count);
-                createdPoolable = Object.Instantiate(_objectsToPool[randomIndex]);
-            }
-
+            var randomIndex = Random.Range(0, _objectsToPool.Count);
+            createdPoolable = Object.Instantiate(_objectsToPool[randomIndex]);
             createdPoolable.OnCreate();
-        
+
             if (_allPoolables == null)
             {
                 _allPoolables = new List<Poolable>();
             }
-        
+
             _allPoolables.Add(createdPoolable);
             return createdPoolable;
         }
@@ -206,7 +193,7 @@ So the intended poolable has no chance to randomly been chosen and be instantiat
         /// </summary>
         private void OnGenerateObjectPool()
         {
-            _onGeneratObjectPoolEvent?.Invoke();
+            _onGenerateObjectPoolEvent?.Invoke();
         }
 
         /// <summary>
@@ -242,7 +229,7 @@ So the intended poolable has no chance to randomly been chosen and be instantiat
         private void OnDestroyPoolable(Poolable poolable)
         {
         }
-        
+
         #endregion PRIVATE_METHODS
     }
 }

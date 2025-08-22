@@ -40,7 +40,7 @@ public class PoolTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             _pooler = _poolsManager.GetPooler("second-pool");
-            _pooler.AddObjectToObjectsToPoolList(_secondPoolables[0]);
+            _pooler.AddPoolablePrefab(_secondPoolables[0]);
         }
     }
 
