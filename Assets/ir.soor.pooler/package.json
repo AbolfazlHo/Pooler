@@ -1,7 +1,7 @@
 {
   "name": "ir.soor.pooler",
   "displayName": "Pooler",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "unity": "6000.0",
   "description": "A package to pool everything.",
   "keywords": [
