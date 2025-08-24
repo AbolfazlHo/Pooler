@@ -38,7 +38,8 @@ namespace Soor.Pooler
         /// <param name="poolMaxCapacity">The maximum number of objects the pool can hold.</param>
         /// <param name="generatePoolImmediately">If true, the ObjectPool will be generated immediately after the Pooler is added.</param>
         /// <exception cref="ArgumentException">Thrown if a pool with the specified name already exists.</exception>
-        public void AddPooler(string poolName, List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000, bool generatePoolImmediately = true)
+//        public void AddPooler(string poolName, List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000, bool generatePoolImmediately = true)
+        public void AddPooler(string poolName, List<Poolable> objectsToPool, bool poolRandomly = false, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000, bool generatePoolImmediately = true)
         {
             if (_allPoolers.Any(p => p.PoolName == poolName))
             {
@@ -46,7 +47,7 @@ namespace Soor.Pooler
                 throw new Exception("Already exists.");
             }
         
-            _allPoolers.Add(new Pooler(poolName, objectsToPool, poolDefaultCapacity, poolMaxCapacity));
+            _allPoolers.Add(new Pooler(poolName, objectsToPool, poolRandomly, poolDefaultCapacity, poolMaxCapacity));
             if (generatePoolImmediately) GenerateObjectPool(_allPoolers[^1]);
         }
 

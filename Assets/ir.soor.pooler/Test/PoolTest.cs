@@ -72,6 +72,7 @@ public class PoolTest : MonoBehaviour
 
     private void CreateNewPool()
     {
-        _poolsManager.AddPooler("second-pool", _secondPoolables, 10, 20, true);
+//        _poolsManager.AddPooler("second-pool", _secondPoolables, 10, 20, true);
+        _poolsManager.AddPooler("second-pool", _secondPoolables, false, 10, 20, true);
     }
 }

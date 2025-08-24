@@ -36,6 +36,25 @@ namespace Soor.Pooler
         /// </summary>
         [SerializeField] private List<Poolable> _objectsToPool = new List<Poolable>();
 
+
+
+
+
+
+
+
+        [SerializeField] private bool _poolRandomly = false;
+//        public bool poolRandomly = false;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
         /// <summary>
         /// Invoked after the object pool is created.
         /// </summary>
@@ -60,6 +79,25 @@ namespace Soor.Pooler
         /// A list to keep track of all objects ever created by the pool.
         /// </summary>
         private List<Poolable> _allPoolables = new List<Poolable>();
+        
+        
+        
+        
+        
+        
+        
+        
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+
+        private int _lastCreatedPoolableIndex = -1;
+        
+        
+        
+        
+        
+        
 
         #endregion FIELDS
 
@@ -80,6 +118,19 @@ namespace Soor.Pooler
         /// Gets a read-only list of the prefabs used as source for pooled instances.
         /// </summary>
         public List<Poolable> ObjectsToPool => _objectsToPool;
+        
+        
+        
+        
+        ////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////
+
+        public bool PoolRandomly
+        {
+            get => _poolRandomly;
+            set => _poolRandomly = value;
+        }
 
         #endregion PROPERTIES
 
@@ -93,11 +144,23 @@ namespace Soor.Pooler
         /// <param name="objectsToPool">List of Poolable prefabs used for instantiation.</param>
         /// <param name="poolDefaultCapacity">Initial number of objects the pool can hold.</param>
         /// <param name="poolMaxCapacity">Maximum number of objects the pool can manage.</param>
-        public Pooler(string poolName, List<Poolable> objectsToPool, int poolDefaultCapacity = 10,
+        public Pooler(string poolName, List<Poolable> objectsToPool, bool poolRandomly = false, int poolDefaultCapacity = 10,
             int poolMaxCapacity = 1000)
         {
             _poolName = poolName;
             _objectsToPool = objectsToPool;
+
+
+            //////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////
+            
+            _poolRandomly = poolRandomly;
+            
+            
+            
+            
+            
             _poolDefaultCapacity = poolDefaultCapacity;
             _poolMaxCapacity = poolMaxCapacity;
         }
@@ -175,8 +238,43 @@ namespace Soor.Pooler
             }
 
             Poolable createdPoolable;
-            var randomIndex = Random.Range(0, _objectsToPool.Count);
-            createdPoolable = Object.Instantiate(_objectsToPool[randomIndex]);
+            
+            ///////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////
+
+
+            if (_poolRandomly)
+            {
+                var randomIndex = Random.Range(0, _objectsToPool.Count);
+                createdPoolable = Object.Instantiate(_objectsToPool[randomIndex]);
+            }
+            else
+            {
+                if (_objectsToPool.Count == 1)
+                {
+                    createdPoolable = Object.Instantiate(_objectsToPool[0]);
+                }
+                else
+                {
+                    if (_lastCreatedPoolableIndex >= _objectsToPool.Count - 1)
+                    {
+                        _lastCreatedPoolableIndex = -1;
+                    }
+
+                    _lastCreatedPoolableIndex++;
+                    createdPoolable = Object.Instantiate(_objectsToPool[_lastCreatedPoolableIndex]);
+
+                }
+            }
+            
+//            var randomIndex = Random.Range(0, _objectsToPool.Count);
+//            createdPoolable = Object.Instantiate(_objectsToPool[randomIndex]);
+            
+            
+            
+            
+            
             createdPoolable.OnCreate();
 
             if (_allPoolables == null)
