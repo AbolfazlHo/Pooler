@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Soor.Pooler
+namespace SoorPooler
 {
     /// <summary>
     /// Manages a GameObject's lifecycle within an object pool.

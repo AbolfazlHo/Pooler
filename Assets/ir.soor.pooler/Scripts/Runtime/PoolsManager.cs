@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SoorPooler;
 using UnityEngine;
 
 namespace Soor.Pooler
@@ -17,7 +18,7 @@ namespace Soor.Pooler
         /// <summary>
         /// A list of all <see cref="Pooler"/> instances that this component manages.
         /// </summary>
-        [SerializeField] private List<Pooler> _allPoolers = new List<Pooler>();
+        [SerializeField] private List<SoorPooler.Pooler> _allPoolers = new List<SoorPooler.Pooler>();
 
         #endregion SERIALIZED_FIELDS
 
@@ -48,7 +49,7 @@ namespace Soor.Pooler
                 throw new Exception("Already exists.");
             }
 
-            _allPoolers.Add(new Pooler(poolName, objectsToPool, poolRandomly, poolDefaultCapacity, poolMaxCapacity));
+            _allPoolers.Add(new SoorPooler.Pooler(poolName, objectsToPool, poolRandomly, poolDefaultCapacity, poolMaxCapacity));
             if (generatePoolImmediately) GenerateObjectPool(_allPoolers[^1]);
         }
 
@@ -57,7 +58,7 @@ namespace Soor.Pooler
         /// if it has not been generated already.
         /// </summary>
         /// <param name="pooler">The <see cref="Pooler"/> instance for which to generate the pool.</param>
-        public void GenerateObjectPool(Pooler pooler)
+        public void GenerateObjectPool(SoorPooler.Pooler pooler)
         {
             if (pooler.ObjectPool == null) pooler.GenerateObjectPool();
         }
@@ -78,7 +79,7 @@ namespace Soor.Pooler
         /// <param name="poolerName">The unique name of the pool to retrieve.</param>
         /// <returns>The <see cref="Pooler"/> instance with the specified name.</returns>
         /// <exception cref="KeyNotFoundException">Thrown if a pool with the specified name does not exist.</exception>
-        public Pooler GetPooler(string poolerName)
+        public SoorPooler.Pooler GetPooler(string poolerName)
         {
             var intendedPooler = _allPoolers.FirstOrDefault(p => p.PoolName == poolerName);
             if (intendedPooler != null) return intendedPooler;
@@ -100,7 +101,7 @@ namespace Soor.Pooler
         /// Destroys a pooler and its GameObjects.
         /// </summary>
         /// <param name="pooler">The pooler instance to destroy.</param>
-        public void DestroyObjectPool(Pooler pooler)
+        public void DestroyObjectPool(SoorPooler.Pooler pooler)
         {
             pooler.DestroyObjectPool();
         }

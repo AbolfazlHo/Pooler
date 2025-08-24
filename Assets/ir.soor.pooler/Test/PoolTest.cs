@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Soor.Pooler;
+using SoorPooler;
 using UnityEngine;
 
 public class PoolTest : MonoBehaviour

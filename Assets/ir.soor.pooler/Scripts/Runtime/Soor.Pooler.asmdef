@@ -1,6 +1,6 @@
 {
-    "name": "Soor.Pooler",
-    "rootNamespace": "Soor.Pooler",
+    "name": "SoorPooler",
+    "rootNamespace": "SoorPooler",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

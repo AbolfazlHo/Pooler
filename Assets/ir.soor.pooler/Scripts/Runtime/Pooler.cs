@@ -6,7 +6,7 @@ using UnityEngine.Pool;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-namespace Soor.Pooler
+namespace SoorPooler
 {
     /// <summary>
     /// Manages the lifecycle of a Poolable object pool, including creation, reuse, and cleanup.
