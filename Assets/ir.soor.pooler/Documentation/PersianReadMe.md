@@ -1,5 +1,10 @@
 # Pooler
 
+![Unity](https://img.shields.io/badge/Unity-6000.0.30f1%2B-black?logo=unity)
+![License](https://img.shields.io/github/license/AbolfazlHo/Pooler)
+![GitHub last commit](https://img.shields.io/github/last-commit/AbolfazlHo/Pooler)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
+
 Pooler یک پکیج یونیتی است که برای ساده‌سازی و بهینه‌سازی Object Pooling در پروژه‌های شما طراحی شده است. این پکیج یک راه قدرتمند و قابل استفاده مجدد برای مدیریت اشیای pooled فراهم می‌کند و یک API تمیز و رویدادهای چرخه حیات قابل تنظیم را ارائه می‌دهد. این امر می‌تواند با کاهش سربار instantiating و destroying GameObjects، به بهبود قابل توجه عملکرد منجر شود.
 
 ##اجزای اصلی

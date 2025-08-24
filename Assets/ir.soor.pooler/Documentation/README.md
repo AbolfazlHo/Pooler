@@ -1,5 +1,10 @@
 # Pooler
 
+![Unity](https://img.shields.io/badge/Unity-6000.0.30f1%2B-black?logo=unity)
+![License](https://img.shields.io/github/license/AbolfazlHo/Pooler)
+![GitHub last commit](https://img.shields.io/github/last-commit/AbolfazlHo/Pooler)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
+
 [Read in Persian/پارسی](./PersianReadMe.md)
 
 Pooler is a Unity package designed to simplify and streamline object pooling in your projects. It provides a robust and reusable way to manage pooled objects, offering a clean API and customizable lifecycle events. This can lead to significant performance improvements by reducing the overhead of instantiating and destroying GameObjects.
