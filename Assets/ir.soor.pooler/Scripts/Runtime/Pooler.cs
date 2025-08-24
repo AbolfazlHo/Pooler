@@ -36,36 +36,28 @@ namespace Soor.Pooler
         /// </summary>
         [SerializeField] private List<Poolable> _objectsToPool = new List<Poolable>();
 
-
-
-
-
-
-
-
+        /// <summary>
+        /// If true, a random prefab will be chosen for instantiation.
+        /// If false, prefabs will be instantiated in a cyclical order.
+        /// </summary>
         [SerializeField] private bool _poolRandomly = false;
-//        public bool poolRandomly = false;
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+        #endregion SERIALIZED_FIELD
+
+
+        #region EVENTS
 
         /// <summary>
         /// Invoked after the object pool is created.
         /// </summary>
-        [SerializeField] private UnityEvent _onGenerateObjectPoolEvent;
+        [Space] [SerializeField] private UnityEvent _onGenerateObjectPoolEvent;
 
         /// <summary>
         /// Invoked after the object pool is destroyed and cleaned up.
         /// </summary>
         [SerializeField] private UnityEvent _onDestroyObjectPoolEvent;
 
-        #endregion SERIALIZED_FIELD
+        #endregion EVENTS
 
 
         #region FIELDS
@@ -79,25 +71,11 @@ namespace Soor.Pooler
         /// A list to keep track of all objects ever created by the pool.
         /// </summary>
         private List<Poolable> _allPoolables = new List<Poolable>();
-        
-        
-        
-        
-        
-        
-        
-        
-        ///////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Tracks the index of the last instantiated prefab when pooling cyclically.
+        /// </summary>
         private int _lastCreatedPoolableIndex = -1;
-        
-        
-        
-        
-        
-        
 
         #endregion FIELDS
 
@@ -118,14 +96,10 @@ namespace Soor.Pooler
         /// Gets a read-only list of the prefabs used as source for pooled instances.
         /// </summary>
         public List<Poolable> ObjectsToPool => _objectsToPool;
-        
-        
-        
-        
-        ////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the pool should instantiate prefabs randomly or cyclically.
+        /// </summary>
         public bool PoolRandomly
         {
             get => _poolRandomly;
@@ -138,29 +112,19 @@ namespace Soor.Pooler
         #region PUBLIC_METHODS
 
         /// <summary>
-        /// Creates a new Pooler instance with custom settings.
+        /// Initializes a new instance of the Pooler class with specified settings.
         /// </summary>
         /// <param name="poolName">Unique identifier for the pool.</param>
         /// <param name="objectsToPool">List of Poolable prefabs used for instantiation.</param>
+        /// <param name="poolRandomly">If true, prefabs are chosen randomly for instantiation. If false, they are chosen cyclically.</param>
         /// <param name="poolDefaultCapacity">Initial number of objects the pool can hold.</param>
         /// <param name="poolMaxCapacity">Maximum number of objects the pool can manage.</param>
-        public Pooler(string poolName, List<Poolable> objectsToPool, bool poolRandomly = false, int poolDefaultCapacity = 10,
-            int poolMaxCapacity = 1000)
+        public Pooler(string poolName, List<Poolable> objectsToPool, bool poolRandomly = false,
+            int poolDefaultCapacity = 10, int poolMaxCapacity = 1000)
         {
             _poolName = poolName;
             _objectsToPool = objectsToPool;
-
-
-            //////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////
-            
             _poolRandomly = poolRandomly;
-            
-            
-            
-            
-            
             _poolDefaultCapacity = poolDefaultCapacity;
             _poolMaxCapacity = poolMaxCapacity;
         }
@@ -224,11 +188,11 @@ namespace Soor.Pooler
         #region PRIVATE_METHODS
 
         /// <summary>
-        /// Creates a new Poolable instance by instantiating a random prefab from the list.
-        /// Adds it to the internal tracking list.
+        /// Creates and initializes a new Poolable instance. The prefab is chosen either randomly or cyclically
+        /// from the list of available prefabs, based on the `PoolRandomly` setting.
         /// </summary>
-        /// <returns>The newly created Poolable.</returns>
-        /// <exception cref="Exception">Thrown if no prefabs are available.</exception>
+        /// <returns>The newly created Poolable instance.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if the _objectsToPool list is empty.</exception>
         private Poolable CreatePoolable()
         {
             if (_objectsToPool.Count == 0)
@@ -238,11 +202,6 @@ namespace Soor.Pooler
             }
 
             Poolable createdPoolable;
-            
-            ///////////////////////////////////////////////////////////////////////////////////////
-            ///////////////////////////////////////////////////////////////////////////////////////
-            ///////////////////////////////////////////////////////////////////////////////////////
-
 
             if (_poolRandomly)
             {
@@ -264,17 +223,9 @@ namespace Soor.Pooler
 
                     _lastCreatedPoolableIndex++;
                     createdPoolable = Object.Instantiate(_objectsToPool[_lastCreatedPoolableIndex]);
-
                 }
             }
-            
-//            var randomIndex = Random.Range(0, _objectsToPool.Count);
-//            createdPoolable = Object.Instantiate(_objectsToPool[randomIndex]);
-            
-            
-            
-            
-            
+
             createdPoolable.OnCreate();
 
             if (_allPoolables == null)
