@@ -218,7 +218,7 @@ namespace SoorPooler
                 else
                 {
 //                    if (_lastCreatedPoolableIndex >= _objectsToPool.Count - 1)
-                    if (_lastCreatedPoolableIndex > _objectsToPool.Count)
+                    if (_lastCreatedPoolableIndex > _objectsToPool.Count -1)
                     {
                         _lastCreatedPoolableIndex = 0;
                     }
