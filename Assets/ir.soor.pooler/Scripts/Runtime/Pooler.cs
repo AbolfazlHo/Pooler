@@ -75,7 +75,8 @@ namespace SoorPooler
         /// <summary>
         /// Tracks the index of the last instantiated prefab when pooling cyclically.
         /// </summary>
-        private int _lastCreatedPoolableIndex = -1;
+        private int _lastCreatedPoolableIndex = 0;
+//        private int _lastCreatedPoolableIndex = -1;
 
         #endregion FIELDS
 
@@ -216,13 +217,14 @@ namespace SoorPooler
                 }
                 else
                 {
-                    if (_lastCreatedPoolableIndex >= _objectsToPool.Count - 1)
+//                    if (_lastCreatedPoolableIndex >= _objectsToPool.Count - 1)
+                    if (_lastCreatedPoolableIndex > _objectsToPool.Count)
                     {
-                        _lastCreatedPoolableIndex = -1;
+                        _lastCreatedPoolableIndex = 0;
                     }
 
-                    _lastCreatedPoolableIndex++;
                     createdPoolable = Object.Instantiate(_objectsToPool[_lastCreatedPoolableIndex]);
+                    _lastCreatedPoolableIndex++;
                 }
             }
 
