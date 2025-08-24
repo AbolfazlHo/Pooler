@@ -13,7 +13,7 @@ namespace Soor.Pooler
         /// If true, all <see cref="Pooler"/> instances in the `_allPoolers` list will be generated in the Awake method.
         /// </summary>
         [SerializeField] private bool _generateAllPoolsOnAwake = false;
-        
+
         /// <summary>
         /// A list of all <see cref="Pooler"/> instances that this component manages.
         /// </summary>
@@ -34,19 +34,20 @@ namespace Soor.Pooler
         /// </summary>
         /// <param name="poolName">The unique name for the new pool.</param>
         /// <param name="objectsToPool">The list of poolable prefabs to be pooled.</param>
+        /// <param name="poolRandomly">If true, prefabs are chosen randomly for instantiation. If false, they are chosen cyclically.</param>
         /// <param name="poolDefaultCapacity">The default initial capacity of the pool.</param>
         /// <param name="poolMaxCapacity">The maximum number of objects the pool can hold.</param>
         /// <param name="generatePoolImmediately">If true, the ObjectPool will be generated immediately after the Pooler is added.</param>
         /// <exception cref="ArgumentException">Thrown if a pool with the specified name already exists.</exception>
-//        public void AddPooler(string poolName, List<Poolable> objectsToPool, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000, bool generatePoolImmediately = true)
-        public void AddPooler(string poolName, List<Poolable> objectsToPool, bool poolRandomly = false, int poolDefaultCapacity = 10, int poolMaxCapacity = 1000, bool generatePoolImmediately = true)
+        public void AddPooler(string poolName, List<Poolable> objectsToPool, bool poolRandomly = false,
+            int poolDefaultCapacity = 10, int poolMaxCapacity = 1000, bool generatePoolImmediately = true)
         {
             if (_allPoolers.Any(p => p.PoolName == poolName))
             {
                 Debug.LogError($"A Pooler with the name {poolName} already exists.");
                 throw new Exception("Already exists.");
             }
-        
+
             _allPoolers.Add(new Pooler(poolName, objectsToPool, poolRandomly, poolDefaultCapacity, poolMaxCapacity));
             if (generatePoolImmediately) GenerateObjectPool(_allPoolers[^1]);
         }
@@ -103,7 +104,7 @@ namespace Soor.Pooler
         {
             pooler.DestroyObjectPool();
         }
-        
+
         #endregion METHODS
     }
 }
