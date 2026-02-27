@@ -40,7 +40,7 @@ public class PoolTest : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            _pooler = _poolsManager.GetPooler("second-pool");
+            _pooler = _poolsManager.GetPooler("other-pool");
             _pooler.AddPoolablePrefab(_secondPoolables[0]);
         }
     }
@@ -50,7 +50,7 @@ public class PoolTest : MonoBehaviour
         if (_pooler == null)
         {
 //            _pooler = _poolsManager.GetPooler("my-pool");
-            _pooler = _poolsManager.GetPooler("second-pool");
+            _pooler = _poolsManager.GetPooler("other-pool");
             _poolsManager.GenerateObjectPool(_pooler);
         }
         
@@ -74,6 +74,6 @@ public class PoolTest : MonoBehaviour
     private void CreateNewPool()
     {
 //        _poolsManager.AddPooler("second-pool", _secondPoolables, 10, 20, true);
-        _poolsManager.AddPooler("second-pool", _secondPoolables, false, 10, 20, true);
+        _poolsManager.AddPooler("other-pool", _secondPoolables, false, 10, 20, true);
     }
 }
