@@ -42,7 +42,10 @@ namespace SoorPooler
         /// </summary>
         [SerializeField] private bool _poolRandomly = false;
 
-
+        //ToDo: Fix the following summary.
+        /// <summary>
+        /// The parent of all poolables instantiated by this class. If it's `null` the poolables won't have parent.
+        /// </summary>
         [Tooltip("This is an optional field.")]
         [SerializeField] private Transform _instantiationParent = null;
 
@@ -111,6 +114,10 @@ namespace SoorPooler
             set => _poolRandomly = value;
         }
 
+        //ToDo: fix the following summary.
+        /// <summary>
+        /// Gets and Sets value including the parent of all poolables within this pooler.
+        /// </summary>
         public Transform InstantiationParent
         {
             get => _instantiationParent;
@@ -122,6 +129,8 @@ namespace SoorPooler
 
         #region PUBLIC_METHODS
 
+        //ToDo: Fix the comment of param `instantiationParent`
+        
         /// <summary>
         /// Initializes a new instance of the Pooler class with specified settings.
         /// </summary>
@@ -130,14 +139,16 @@ namespace SoorPooler
         /// <param name="poolRandomly">If true, prefabs are chosen randomly for instantiation. If false, they are chosen cyclically.</param>
         /// <param name="poolDefaultCapacity">Initial number of objects the pool can hold.</param>
         /// <param name="poolMaxCapacity">Maximum number of objects the pool can manage.</param>
+        /// <param name="instantiationParent">The parent of all poolables instantiated by this pooler.</param>
         public Pooler(string poolName, List<Poolable> objectsToPool, bool poolRandomly = false,
-            int poolDefaultCapacity = 10, int poolMaxCapacity = 1000)
+            int poolDefaultCapacity = 10, int poolMaxCapacity = 1000, Transform instantiationParent = null)
         {
             _poolName = poolName;
             _objectsToPool = objectsToPool;
             _poolRandomly = poolRandomly;
             _poolDefaultCapacity = poolDefaultCapacity;
             _poolMaxCapacity = poolMaxCapacity;
+            _instantiationParent = instantiationParent;
         }
 
         /// <summary>
@@ -223,29 +234,16 @@ namespace SoorPooler
             {
                 if (_objectsToPool.Count == 1)
                 {
-//                    createdPoolable = Object.Instantiate(_objectsToPool[0]);
-
-
-
                     createdPoolable = InstantiatePoolable(_objectsToPool[0]);
-
                 }
                 else
                 {
-//                    if (_lastCreatedPoolableIndex >= _objectsToPool.Count - 1)
                     if (_lastCreatedPoolableIndex > _objectsToPool.Count -1)
                     {
                         _lastCreatedPoolableIndex = 0;
                     }
-
-//                    createdPoolable = Object.Instantiate(_objectsToPool[_lastCreatedPoolableIndex]);
-                    
-                    
                     
                     createdPoolable = InstantiatePoolable(_objectsToPool[_lastCreatedPoolableIndex]);
-                    
-                    
-                    
                     _lastCreatedPoolableIndex++;
                 }
             }
@@ -261,8 +259,12 @@ namespace SoorPooler
             return createdPoolable;
         }
 
-
-
+// ToDo: Fix the following summary
+        /// <summary>
+        /// Instantiates the intended poolable.
+        /// </summary>
+        /// <param name="poolable">The poolable intended to instantiate.</param>
+        /// <returns>The new instance of poolable</returns>
         private Poolable InstantiatePoolable(Poolable poolable)
         {
             Poolable instantiatedPoolable;
@@ -278,8 +280,6 @@ namespace SoorPooler
 
             return instantiatedPoolable;
         }
-        
-        
 
         /// <summary>
         /// Triggers the configured UnityEvent after pool creation is completed.
