@@ -53,7 +53,7 @@ namespace Soor.Pooler
             if (generatePoolImmediately) GenerateObjectPool(_allPoolers[^1]);
         }
         
-        
+        // ToDo: overload the constructor to get an object of Pooler type.
 
         /// <summary>
         /// Generates the <see cref="ObjectPool{T}"/> for the specified <see cref="Pooler"/> instance,
