@@ -44,6 +44,12 @@ namespace SoorPooler
 
         //ToDo: Fix the following summary.
         /// <summary>
+        /// If true, the ObjectPool will be generated within the constructor.
+        /// </summary>
+        [SerializeField] private bool _generateObjectPoolInConstruction = true;
+
+        //ToDo: Fix the following summary.
+        /// <summary>
         /// The parent of all poolables instantiated by this class. If it's `null` the poolables won't have parent.
         /// </summary>
         [Tooltip("This is an optional field.")]
@@ -85,6 +91,9 @@ namespace SoorPooler
         private int _lastCreatedPoolableIndex = 0;
 //        private int _lastCreatedPoolableIndex = -1;
 
+
+//        private bool _objectPoolHasGenerated = false;
+
         #endregion FIELDS
 
 
@@ -116,6 +125,17 @@ namespace SoorPooler
 
         //ToDo: fix the following summary.
         /// <summary>
+        /// Gets or sets a value indicating whether the ObjectPool should be generated in constructor or not?
+        /// </summary>
+        public bool GenerateObjectPoolInConstruction
+        {
+            get => _generateObjectPoolInConstruction;
+            set => _generateObjectPoolInConstruction = value;
+        }
+        
+        
+        //ToDo: fix the following summary.
+        /// <summary>
         /// Gets and Sets value including the parent of all poolables within this pooler.
         /// </summary>
         public Transform InstantiationParent
@@ -124,13 +144,15 @@ namespace SoorPooler
             set => _instantiationParent = value;
         }
 
+        
+
         #endregion PROPERTIES
 
 
         #region PUBLIC_METHODS
 
-        //ToDo: Fix the comment of param `instantiationParent`
-        
+        //ToDo: Fix the comment of param `instantiationParent` and `generateObjectPoolInConstruction`
+
         /// <summary>
         /// Initializes a new instance of the Pooler class with specified settings.
         /// </summary>
@@ -139,9 +161,10 @@ namespace SoorPooler
         /// <param name="poolRandomly">If true, prefabs are chosen randomly for instantiation. If false, they are chosen cyclically.</param>
         /// <param name="poolDefaultCapacity">Initial number of objects the pool can hold.</param>
         /// <param name="poolMaxCapacity">Maximum number of objects the pool can manage.</param>
+        /// <param name="generateObjectPoolInConstruction">If true, the ObjectPool will be generated within the constructor.</param>
         /// <param name="instantiationParent">The parent of all poolables instantiated by this pooler.</param>
         public Pooler(string poolName, List<Poolable> objectsToPool, bool poolRandomly = false,
-            int poolDefaultCapacity = 10, int poolMaxCapacity = 1000, Transform instantiationParent = null)
+            int poolDefaultCapacity = 10, int poolMaxCapacity = 1000, bool generateObjectPoolInConstruction = true, Transform instantiationParent = null)
         {
             _poolName = poolName;
             _objectsToPool = objectsToPool;
@@ -149,6 +172,14 @@ namespace SoorPooler
             _poolDefaultCapacity = poolDefaultCapacity;
             _poolMaxCapacity = poolMaxCapacity;
             _instantiationParent = instantiationParent;
+            _generateObjectPoolInConstruction = generateObjectPoolInConstruction;
+
+//            _objectPoolHasGenerated = false;
+                
+            if (_generateObjectPoolInConstruction)
+            {
+                GenerateObjectPool();
+            }
         }
 
         /// <summary>
@@ -156,12 +187,15 @@ namespace SoorPooler
         /// </summary>
         public void GenerateObjectPool()
         {
+            if (_objectPool != null) return;
+            
             _objectPool = new ObjectPool<Poolable>
             (
                 CreatePoolable, OnGetPoolable, OnReleasePoolable, OnDestroyPoolable,
                 true, _poolDefaultCapacity, _poolMaxCapacity
             );
 
+//            _objectPoolHasGenerated = true;
             OnGenerateObjectPool();
         }
 
@@ -184,6 +218,7 @@ namespace SoorPooler
 
             _allPoolables.Clear();
             _allPoolables = new List<Poolable>();
+//            _objectPoolHasGenerated = false;
 
             OnDestroyObjectPool();
         }

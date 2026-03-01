@@ -52,6 +52,8 @@ namespace Soor.Pooler
             _allPoolers.Add(new SoorPooler.Pooler(poolName, objectsToPool, poolRandomly, poolDefaultCapacity, poolMaxCapacity));
             if (generatePoolImmediately) GenerateObjectPool(_allPoolers[^1]);
         }
+        
+        
 
         /// <summary>
         /// Generates the <see cref="ObjectPool{T}"/> for the specified <see cref="Pooler"/> instance,

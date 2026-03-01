@@ -39,13 +39,18 @@ public class PoolTest : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            CreateNewPool();
+//            CreateNewPool();
+            ThirdPool();
+
         }
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            _pooler = _poolsManager.GetPooler("other-pool");
-            _pooler.AddPoolablePrefab(_secondPoolables[0]);
+//            _pooler = _poolsManager.GetPooler("other-pool");
+//            _pooler.AddPoolablePrefab(_secondPoolables[0]);
+
+
+            GetFromThirdPool();
         }
     }
 
@@ -83,4 +88,19 @@ public class PoolTest : MonoBehaviour
         _pooler.InstantiationParent = _parent;
 
     }
+
+
+    private Pooler _thirdPooler = null;
+    
+    private void ThirdPool()
+    {
+        _thirdPooler = new Pooler("thirdPool", _secondPoolables);
+    }
+
+    private void GetFromThirdPool()
+    {
+        _thirdPooler.ObjectPool.Get();
+    }
+    
+    
 }
