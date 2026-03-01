@@ -9,6 +9,10 @@ public class PoolTest : MonoBehaviour
     [SerializeField] private PoolsManager _poolsManager;
     [SerializeField] private List<Poolable> _secondPoolables;
 
+
+    [SerializeField] private Transform _parent;
+    
+
     private Pooler _pooler = null;
     private List<Poolable> _poolables = new List<Poolable>();
     
@@ -75,5 +79,8 @@ public class PoolTest : MonoBehaviour
     {
 //        _poolsManager.AddPooler("second-pool", _secondPoolables, 10, 20, true);
         _poolsManager.AddPooler("other-pool", _secondPoolables, false, 10, 20, true);
+        _pooler = _poolsManager.GetPooler("other-pool");
+        _pooler.InstantiationParent = _parent;
+
     }
 }

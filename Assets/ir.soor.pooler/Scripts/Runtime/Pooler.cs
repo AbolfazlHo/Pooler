@@ -42,6 +42,10 @@ namespace SoorPooler
         /// </summary>
         [SerializeField] private bool _poolRandomly = false;
 
+
+        [Tooltip("This is an optional field.")]
+        [SerializeField] private Transform _instantiationParent = null;
+
         #endregion SERIALIZED_FIELD
 
 
@@ -105,6 +109,12 @@ namespace SoorPooler
         {
             get => _poolRandomly;
             set => _poolRandomly = value;
+        }
+
+        public Transform InstantiationParent
+        {
+            get => _instantiationParent;
+            set => _instantiationParent = value;
         }
 
         #endregion PROPERTIES
@@ -213,7 +223,12 @@ namespace SoorPooler
             {
                 if (_objectsToPool.Count == 1)
                 {
-                    createdPoolable = Object.Instantiate(_objectsToPool[0]);
+//                    createdPoolable = Object.Instantiate(_objectsToPool[0]);
+
+
+
+                    createdPoolable = InstantiatePoolable(_objectsToPool[0]);
+
                 }
                 else
                 {
@@ -223,7 +238,14 @@ namespace SoorPooler
                         _lastCreatedPoolableIndex = 0;
                     }
 
-                    createdPoolable = Object.Instantiate(_objectsToPool[_lastCreatedPoolableIndex]);
+//                    createdPoolable = Object.Instantiate(_objectsToPool[_lastCreatedPoolableIndex]);
+                    
+                    
+                    
+                    createdPoolable = InstantiatePoolable(_objectsToPool[_lastCreatedPoolableIndex]);
+                    
+                    
+                    
                     _lastCreatedPoolableIndex++;
                 }
             }
@@ -238,6 +260,26 @@ namespace SoorPooler
             _allPoolables.Add(createdPoolable);
             return createdPoolable;
         }
+
+
+
+        private Poolable InstantiatePoolable(Poolable poolable)
+        {
+            Poolable instantiatedPoolable;
+            
+            if (_instantiationParent != null)
+            {
+                instantiatedPoolable = Object.Instantiate(poolable, _instantiationParent);
+            }
+            else
+            {
+                instantiatedPoolable = Object.Instantiate(poolable);
+            }
+
+            return instantiatedPoolable;
+        }
+        
+        
 
         /// <summary>
         /// Triggers the configured UnityEvent after pool creation is completed.
